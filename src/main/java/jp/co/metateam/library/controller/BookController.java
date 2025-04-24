@@ -2,6 +2,7 @@ package jp.co.metateam.library.controller;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.ISBN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,10 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+import jp.co.metateam.library.model.Account;
+import jp.co.metateam.library.model.AccountDto;
 import jp.co.metateam.library.model.BookMst;
 import jp.co.metateam.library.model.BookMstDto;
 import jp.co.metateam.library.service.BookMstService;
 import lombok.extern.log4j.Log4j2;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * 書籍関連クラス
@@ -35,7 +41,7 @@ public class BookController {
     @GetMapping("/book/index")
     public String index(Model model) {
         // 書籍を全件取得
-        List<BookMstDto> bookMstList = this.bookMstService.findAvailableWithStockCount();
+        List<BookMst> bookMstList = this.bookMstService.findAvailableWithStock();
         
         model.addAttribute("bookMstList", bookMstList);
 
@@ -51,4 +57,26 @@ public class BookController {
         return "book/add";
     }
     
+    @PostMapping("/book/add")
+    public String addBook(@Valid @ModelAttribute BookMstDto bookMstDto, BindingResult result, RedirectAttributes ra) {
+        if (result.hasErrors()) {
+            ra.addFlashAttribute("bookMstDto", bookMstDto);
+            ra.addFlashAttribute("org.springframework.validation.BindingResult.bookMstDto", result);
+            return "redirect:/book/add";
+        }
+    
+        // ISBNの重複チェックだけコントローラで追加
+        if (bookMstService.selectByIsbn(bookMstDto.getIsbn().trim()) != null) {
+            result.rejectValue("isbn", "error.exists", "登録済みのISBNです");
+            ra.addFlashAttribute("bookMstDto", bookMstDto);
+            ra.addFlashAttribute("org.springframework.validation.BindingResult.bookMstDto", result);
+            return "redirect:/book/add";
+        }
+    
+        bookMstService.save(bookMstDto);
+        ra.addFlashAttribute("message", "書籍が正常に登録されました");
+        return "redirect:/book/index";
+    }
+    
+
 }
