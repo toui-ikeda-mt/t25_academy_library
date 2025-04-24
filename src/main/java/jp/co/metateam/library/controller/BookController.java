@@ -41,7 +41,7 @@ public class BookController {
     @GetMapping("/book/index")
     public String index(Model model) {
         // 書籍を全件取得
-        List<BookMst> bookMstList = this.bookMstService.findAvailableWithStockCount();
+        List<BookMst> bookMstList = this.bookMstService.findAvailableWithStock();
         
         model.addAttribute("bookMstList", bookMstList);
 
