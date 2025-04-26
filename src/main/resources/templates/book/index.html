@@ -13,6 +13,25 @@
             <div class="inner_contens">
                 <div class="page_title">書籍一覧</div>
             </div>
+            <dr>
+                <a th:href="@{/book/add}"> <button class ="register-button">+書籍登録</button></a>
+            </dr>
+        <div class = "table-wrapper">
+            <h2 class ="title">書籍一覧</h2>
+            <table class ="books_table">
+                <thead>
+                    <tr>
+                        <th>書籍名</th>
+                        <th>ISBN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="book : ${bookMstList}">
+                        <td th:text="${book.title}">書籍名</td>
+                        <td th:text="${book.isbn}">ISBN</td>
+                </tbody>
+            </table>
+        </div>  
         </div>
     </div>
     <div th:replace="~{common :: footer}"></div>
