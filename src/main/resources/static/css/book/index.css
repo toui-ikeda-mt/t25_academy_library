@@ -1,9 +1,8 @@
 .books_table {
- width: 100%;
  text-align: left;
  border-collapse: collapse;
  border-spacing: 0;
- border-radius:10px;
+ border-radius:10px; 
 }
 
 .books_table th{
@@ -12,7 +11,7 @@
   padding: 13px;
   border: solid 1px #B9B9B9;
   color: #545454;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .books_table td{
@@ -21,10 +20,14 @@
   background: #FFFFFF;
   border: solid 1px #B9B9B9;
   padding: 13px;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .books_table td:nth-child(1){
+  width: 60%;
+}
+
+.books_table td:nth-child(2){
   width: 40%;
 }
 
@@ -61,4 +64,24 @@
 
 .books_table td a{
   color: #0000EE;
+}
+
+.register-button{
+  background-color: #9affd3;
+  color: #333;
+  border: none;
+  float: right;
+  width: 120px;
+  height: 40px;
+  margin-right: 50px;
+}
+
+.title{
+  color: #888;
+
+}
+
+.table-wrapper{
+  width: 75%;
+  margin: 0 auto;
 }
